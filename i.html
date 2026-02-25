@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Recruitment Assistant</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    margin: 0;
+    padding: 20px;
+    color: white;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #00ffcc;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00ccaa;
+}
+
+.result {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>AI Recruitment Assistant</h2>
+
+<label>Paste Resume:</label>
+<textarea id="resume"></textarea>
+
+<label>Paste Job Description:</label>
+<textarea id="job"></textarea>
+
+<button onclick="analyze()">Analyze Match</button>
+
+<div class="result">
+<h3>Match Score: <span id="score">0%</span></h3>
+
+<h3>Missing Skills:</h3>
+<p id="missing">None</p>
+
+<h3>Suggestions:</h3>
+<p id="suggestions">None</p>
+</div>
+
+</div>
+
+<script>
+function analyze() {
+
+    let resume = document.getElementById("resume").value.toLowerCase();
+    let job = document.getElementById("job").value.toLowerCase();
+
+    let jobWords = job.split(/\W+/);
+    let resumeWords = resume.split(/\W+/);
+
+    let matchCount = 0;
+    let missing = [];
+
+    jobWords.forEach(word => {
+        if(word.length > 3) {
+            if(resumeWords.includes(word)) {
+                matchCount++;
+            } else {
+                missing.push(word);
+            }
+        }
+    });
+
+    let score = Math.round((matchCount / jobWords.length) * 100);
+
+    document.getElementById("score").innerText = score + "%";
+
+    document.getElementById("missing").innerText =
+        missing.slice(0,10).join(", ");
+
+    document.getElementById("suggestions").innerText =
+        "Add missing keywords and relevant skills to improve ATS score.";
+
+}
+</script>
+
+</body>
+</html>
